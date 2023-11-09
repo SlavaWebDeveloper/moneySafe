@@ -26,16 +26,15 @@ financeForm.addEventListener("submit", (event) => {
 
   const changeAmount = Math.abs(convertStringNumber(financeForm.amount.value));
 
-  if (typeOperation === 'income') {
+  if (typeOperation === "income") {
     amount += changeAmount;
   }
 
-  if (typeOperation === 'expenses') {
+  if (typeOperation === "expenses") {
     amount -= changeAmount;
   }
 
   financeAmount.textContent = `${amout.toLocaleString()} ₽`;
-
 });
 
 OverlayScrollbars(report, {});
@@ -43,26 +42,27 @@ OverlayScrollbars(report, {});
 const getData = async (url) => {
   try {
     const response = await fetch(`${API__URL}${url}`);
-    
-    if(!response.ok) {
+
+    if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     return await response.json();
-
   } catch (error) {
     console.error("Ошибка в получении данных:", error);
     throw error;
   }
-}
+};
 
 const closeReport = ({ target }) => {
-  if (target.closest(".report__close") || 
-  (!target.closest(".report") && target !== financeReport)) {
+  if (
+    target.closest(".report__close") ||
+    (!target.closest(".report") && target !== financeReport)
+  ) {
     report.classList.remove("report__open");
     document.removeEventListener("click", closeReport);
-  }  
-}
+  }
+};
 
 const openReport = () => {
   report.classList.add("report__open");
@@ -78,11 +78,11 @@ const renderReport = (data) => {
   reportOperationList.textContent = "";
 
   const reportRows = data.map(
-    ({ category, amount, description, date, type}) => {
-    const reportRow = document.createElement("tr");
-    reportRow.classList.add("report__row");
+    ({ category, amount, description, date, type }) => {
+      const reportRow = document.createElement("tr");
+      reportRow.classList.add("report__row");
 
-    reportRow.innerHTML = `
+      reportRow.innerHTML = `
       <td class="report__cell">${category}</td>
       <td class="report__cell">${amount.toLocaleString()}&nbsp;₽</td>
       <td class="report__cell">${description}</td>
@@ -94,8 +94,9 @@ const renderReport = (data) => {
       </td>
     `;
 
-    return reportRow;
-  });
+      return reportRow;
+    }
+  );
 
   reportOperationList.append(...reportRows);
 };
@@ -106,7 +107,7 @@ financeReport.addEventListener("click", async () => {
   renderReport(data);
 });
 
-reportDates.addEventListener('submit', async (event) => {
+reportDates.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const formData = Object.fromEntries(new FormData(reportDates));
@@ -114,11 +115,11 @@ reportDates.addEventListener('submit', async (event) => {
   const searchParams = new URLSearchParams();
 
   if (formData.startDate) {
-    searchParams.append('startDate', formData.startDate);
+    searchParams.append("startDate", formData.startDate);
   }
 
   if (formData.endDate) {
-    searchParams.append('endDate', formData.endDate);
+    searchParams.append("endDate", formData.endDate);
   }
 
   const queryString = searchParams.toString();
@@ -126,5 +127,4 @@ reportDates.addEventListener('submit', async (event) => {
 
   const data = await getData(url);
   renderReport(data);
-
-})
+});
