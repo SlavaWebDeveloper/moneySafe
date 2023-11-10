@@ -54,7 +54,9 @@ export const animationNumber = (element, number) => {
 
   const animate = () => {
     currenFrame +=1;
+
     const newNumber = initalNumber + increment * currenFrame;
+
     element.textContent = `${newNumber.toLocaleString("RU-ru")} ₽`;
 
     if ( currenFrame < totalFrame ) {

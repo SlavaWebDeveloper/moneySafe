@@ -8,7 +8,7 @@ let amount = 0;
 
 financeAmount.textContent = amount;
 
-const addNewOperation = () => async (event) => {
+const addNewOperation = async (event) => { 
   event.preventDefault();
 
   const typeOperation = event.submitter.dataset.typeOperation;
@@ -18,7 +18,7 @@ const addNewOperation = () => async (event) => {
 
   const newOperation = await postData("/finance", financeFormDate);
 
-  const changeAmount = Math.abs(convertStringNumber(newOperation.amount));
+  const changeAmount = Math.abs(convertStringNumber(newOperation.amount),);
 
   if (typeOperation === "income") {
     amount += changeAmount;
@@ -30,24 +30,25 @@ const addNewOperation = () => async (event) => {
 
   financeAmount.textContent = `${amount.toLocaleString("RU-ru")} ₽`;
   financeForm.reset();
-}; 
+};
+
 
 export const financeControl = async () => {
   const operations = await getData('/finance');
 
   amount = operations.reduce((acc, item) => {
-    if (item.type === 'income') {
-      acc += convertStringNumber(item.amount);
+    if (item.type === "income") {
+      acc += convertStringNumber(item.amount); 
     }
 
-    if (item.type === 'expenses') {
+    if (item.type === "expenses") {
       acc -= convertStringNumber(item.amount);
     }
 
     return acc;
   }, 0);
 
-  animationNumber(financeAmount, amount);  
+  animationNumber(financeAmount, amount);
   financeAmount.textContent = `${amount.toLocaleString("RU-ru")} ₽`;
-  financeForm.addEventListener("submit", addNewOperation); 
+  financeForm.addEventListener("submit", addNewOperation);
 };
