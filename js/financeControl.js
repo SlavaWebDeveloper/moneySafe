@@ -28,7 +28,7 @@ const addNewOperation = async (event) => {
     amount -= changeAmount;
   }
 
-  financeAmount.textContent = `${amount.toLocaleString("RU-ru")} ₽`;
+  animationNumber(financeAmount, amount);
   financeForm.reset();
 };
 
@@ -49,6 +49,5 @@ export const financeControl = async () => {
   }, 0);
 
   animationNumber(financeAmount, amount);
-  financeAmount.textContent = `${amount.toLocaleString("RU-ru")} ₽`;
   financeForm.addEventListener("submit", addNewOperation);
 };
